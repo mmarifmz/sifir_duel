@@ -89,10 +89,16 @@ h1, h2 {
 .card {
     background-color: var(--secondary-black);
     border: 1px solid var(--primary-pink);
+    color: var(--primary-pink);
+}
+
+.card-body {
+    padding: 20px;
 }
 
 .card-title {
     color: var(--primary-pink);
+    margin-bottom: 20px;
 }
 
 .modal-content {
@@ -124,6 +130,15 @@ h1, h2 {
     .container {
         margin-top: 20px;
         padding: 20px;
+    }
+
+    #panelsContainer {
+        flex-direction: column; /* Stacks the panels vertically on smaller screens */
+    }
+
+    #pointsPanel, #historyPanel {
+        max-width: 100%; /* Each panel takes full width on small screens */
+        margin-bottom: 20px; /* Adds space between stacked panels */
     }
 }
 

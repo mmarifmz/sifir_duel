@@ -60,6 +60,7 @@ function rollDice() {
 }
 
 function startTurnTimer() {
+    clearInterval(timerInterval); // Ensure any existing timer is cleared before starting a new one
     startTime = Date.now();
     updateTimerDisplay();
     timerInterval = setInterval(updateTimerDisplay, 10); // Update every 10ms for smooth display
@@ -77,20 +78,28 @@ function updateTimerDisplay() {
 }
 
 function submitAnswer() {
-    const answer = parseInt($u('#answer').first().value.trim());
-    const [, , multiplicand, , multiplier] = $u('#gameStatus').text().split(' ');
-    const product = parseInt(multiplicand) * parseInt(multiplier);
-
     clearInterval(timerInterval);
 
+    const answer = parseInt($u('#answer').first().value.trim());
+    const gameStatusText = $u('#gameStatus').text();
+    const [, , multiplicand, , multiplier] = gameStatusText.split(' ');
+    const product = parseInt(multiplicand) * parseInt(multiplier);
+
+    // Ensure elapsedTime calculation is done before using it
+    const elapsedTime = (Date.now() - startTime) / 1000; // Time taken in seconds
+    
+
     if (answer === product) {
-        const elapsedTime = (Date.now() - startTime) / 1000;
         let pointsEarned = Math.max(10 - elapsedTime, 0).toFixed(3);
         playerPoints[currentPlayer] += parseFloat(pointsEarned);
         updateGameStatus(`Correct! ${currentPlayer === 1 ? player1Name : player2Name} earns ${pointsEarned} points.`);
     } else {
         updateGameStatus(`Incorrect! The correct answer is ${product}.`);
     }
+
+    // Logging history
+    const question = `${multiplicand} × ${multiplier}`;
+    logHistory(question, answer === product ? answer : 'Incorrect', elapsedTime); // Pass 'Incorrect' if the answer was wrong
 
     updatePointsDisplay();
     prepareForNextPlayer();
@@ -115,6 +124,7 @@ function prepareForNextPlayer() {
 }
 
 function endTurnDueToTimeout() {
+    clearInterval(timerInterval);
     updateGameStatus(`Time's up! No points awarded.`);
     prepareForNextPlayer();
 }
@@ -133,10 +143,7 @@ function showModal() {
 }
 
 function closeModal() {
-    const modal = bootstrap.Modal.getInstance(document.getElementById('winningModal'));
-    if (modal) {
-        modal.hide();
-    }
+    backToStart(); // Resets the game when modal is closed
 }
 
 $u(document.body).on('keyup', function(e) {
@@ -186,7 +193,7 @@ function resetGame() {
     currentPlayer = 1;
     playerPositions = { 1: 0, 2: 0 };
     playerPoints = { 1: 0, 2: 0 };
-    clearInterval(timer);
+    clearInterval(timerInterval);
     currentTurn = 1;
     $u('#player1').first().value = '';
     $u('#player2').first().value = '';
@@ -201,8 +208,12 @@ function resetGame() {
 
 function startFireworks() {
     const canvas = document.getElementById('fireworksCanvas');
-    canvas.style.display = 'block'; // Make sure the canvas is visible
     const ctx = canvas.getContext('2d');
+    const winnerText = `${player1Name} wins!`;
+    ctx.font = '24px Arial';
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'center';
+    ctx.fillText(winnerText, canvas.width / 2, canvas.height / 2); // Adjust position as needed
     fireworks = new Fireworks(canvas, ctx);
     fireworks.start();
 }
@@ -218,4 +229,10 @@ function backToStart() {
     document.getElementById('gamePlay').style.display = 'none';
     stopFireworks();
     resetGame();
+}
+
+function logHistory(question, answer, time) {
+    const historyItem = document.createElement('li');
+    historyItem.textContent = `${currentPlayer === 1 ? player1Name : player2Name}: ${question} = ${answer}, Time: ${time.toFixed(3)}s`;
+    document.getElementById('historyList').appendChild(historyItem);
 }
