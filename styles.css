@@ -1,0 +1,174 @@
+:root {
+    --primary-black: #1a1a1a;
+    --secondary-black: #2a2a2a;
+    --primary-pink: #ff69b4;
+    --secondary-pink: #ff1493;
+    --text-color: #ffffff;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--primary-black);
+    color: var(--text-color);
+}
+
+.container {
+    background-color: var(--secondary-black);
+    border-radius: 15px;
+    padding: 30px;
+    margin-top: 50px;
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+}
+
+h1, h2 {
+    color: var(--primary-pink);
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.form-control, .form-select {
+    background-color: var(--primary-black);
+    border: 1px solid var(--primary-pink);
+    color: var(--text-color);
+    font-size: 2.5rem; /* Increased font size (4x default Bootstrap font size) */
+    height: auto; /* Allow the input to grow with the font size */
+    padding: 0.5rem 1rem; /* Adjust padding for better appearance */
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--primary-black);
+    border-color: var(--secondary-pink);
+    box-shadow: 0 0 0 0.25rem rgba(255, 105, 180, 0.25);
+    color: var(--text-color);
+}
+
+.btn-primary {
+    background-color: var(--primary-pink);
+    border-color: var(--primary-pink);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--secondary-pink);
+    border-color: var(--secondary-pink);
+}
+
+.btn-success {
+    background-color: var(--secondary-pink);
+    border-color: var(--secondary-pink);
+}
+
+.btn-success:hover, .btn-success:focus {
+    background-color: var(--primary-pink);
+    border-color: var(--primary-pink);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-black);
+    border-color: var(--primary-pink);
+    color: var(--primary-pink);
+}
+
+.btn-secondary:hover, .btn-secondary:focus {
+    background-color: var(--primary-pink);
+    border-color: var(--primary-pink);
+    color: var(--primary-black);
+}
+
+#gameStatus {
+    background-color: var(--secondary-black);
+    border: 2px solid var(--primary-pink);
+    color: var(--primary-pink);
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.card {
+    background-color: var(--secondary-black);
+    border: 1px solid var(--primary-pink);
+}
+
+.card-title {
+    color: var(--primary-pink);
+}
+
+.modal-content {
+    background-color: var(--secondary-black);
+    border: 2px solid var(--primary-pink);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--primary-pink);
+}
+
+.modal-title {
+    color: var(--primary-pink);
+}
+
+.btn-close {
+    color: var(--primary-pink);
+}
+
+#fireworksCanvas {
+    width: 100%;
+    height: 200px;
+    background-color: var(--primary-black);
+    border: 1px solid var(--primary-pink);
+    border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        margin-top: 20px;
+        padding: 20px;
+    }
+}
+
+/* Adjust label font size for better proportions */
+label {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Ensure buttons are proportional to the new input size */
+.btn {
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+}
+
+
+/* Make sure the answer input field is consistent with other inputs */
+#answer {
+    font-size: 2.5rem;
+    height: auto;
+    padding: 0.5rem 1rem;
+}
+
+#timerDisplay {
+    color: var(--secondary-pink);
+    font-size: 1.2em;
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: monospace; /* Use monospace font for better alignment of decimal points */
+}
+
+/* You might want to adjust the game status font size slightly */
+#gameStatus {
+    font-size: 2.2rem; /* Slightly smaller to fit longer text */
+    padding: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    #gameStatus {
+        font-size: 1.8rem;
+    }
+}
+
+#winnerMessage {
+    display: block !important;
+    font-size: medium;
+    color: blanchedalmond;
+}
