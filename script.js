@@ -13,9 +13,10 @@ let currentTurn = 1;
 $u('#startGameBtn').on('click', startGame);
 $u('#rollDiceBtn').on('click', rollDice);
 $u('#submitAnswerBtn').on('click', submitAnswer);
-$u('#backToStartBtn').on('click', backToStart);
-$u('.btn-close').on('click', closeModal);
-$u('#winningModal').on('hidden.bs.modal', backToStart);
+
+$u('#backToStartBtn').on('click', closeModalAndResetGame); // Resets and goes back to start
+$u('.btn-close').on('click', closeModal); // Only closes the modal
+$u('#winningModal').on('hidden.bs.modal', closeModal); // Only closes the modal, use this to handle the modal being closed via clicking outside the modal area
 
 function startGame() {
     player1Name = $u('#player1').first().value.trim();
@@ -131,7 +132,7 @@ function endTurnDueToTimeout() {
 
 function endGame() {
     let winner = playerPoints[1] > playerPoints[2] ? player1Name : playerPoints[2] > playerPoints[1] ? player2Name : 'It\'s a tie!';
-    $u('#winnerMessage').text(`Game Over! ${winner} wins with ${Math.max(playerPoints[1], playerPoints[2]).toFixed(3)} points.`);
+    $u('#winnerMessage').text(`Congratulations! ${winner} wins with ${Math.max(playerPoints[1], playerPoints[2]).toFixed(3)} points.`);
     disableAllButtons();
     showModal();
     startFireworks();
@@ -142,8 +143,19 @@ function showModal() {
     modal.show();
 }
 
+function closeModalAndResetGame() {
+    const modal = bootstrap.Modal.getInstance(document.getElementById('winningModal'));
+    if (modal) {
+        modal.hide();
+    }
+    backToStart();  // Resets the game when modal is closed
+}
+
 function closeModal() {
-    backToStart(); // Resets the game when modal is closed
+    const modal = bootstrap.Modal.getInstance(document.getElementById('winningModal'));
+    if (modal) {
+        modal.hide();
+    }
 }
 
 $u(document.body).on('keyup', function(e) {
@@ -180,6 +192,10 @@ function disableSubmitAnswerButton() {
 }
 
 function backToStart() {
+    // Ensure no fireworks are running
+    stopFireworks();
+
+    // Reset game setup
     document.getElementById('nameInput').style.display = 'block';
     document.getElementById('gamePlay').style.display = 'none';
     resetGame();
@@ -207,14 +223,15 @@ function resetGame() {
 }
 
 function startFireworks() {
+    console.log("Starting fireworks...");  // Check if this logs when expected
     const canvas = document.getElementById('fireworksCanvas');
+    if (!canvas) {
+        console.error("Fireworks canvas not found!");
+        return;
+    }
     const ctx = canvas.getContext('2d');
-    const winnerText = `${player1Name} wins!`;
-    ctx.font = '24px Arial';
-    ctx.fillStyle = 'white';
-    ctx.textAlign = 'center';
-    ctx.fillText(winnerText, canvas.width / 2, canvas.height / 2); // Adjust position as needed
-    fireworks = new Fireworks(canvas, ctx);
+    // Assuming you have a valid Fireworks function or library
+    const fireworks = new Fireworks(canvas, ctx);
     fireworks.start();
 }
 
